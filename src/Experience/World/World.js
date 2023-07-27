@@ -1,6 +1,7 @@
 import Experience from '../Experience.js'
 import Environment from './Environment.js'
 import Portal from './Portal/Portal.js'
+import Text from './Text.js'
 
 export default class World
 {
@@ -16,45 +17,11 @@ export default class World
         // Wait for resources
         this.resources.on('ready', () =>
         {
-            this.experience.time.start = Date.now()
-            this.experience.time.elapsed = 0
-
-            // Setup
-            //this.godRays = new GodRays()
-            //this.itachi = new Itachi()
-            //this.crow = new Crow()
-            //this.portal = new Portal()
-            this.portal = new Portal({
-                colors:
-                    {
-                        a: '#130000',
-                        b: '#ff000a',
-                        c: '#ff661e',
-                    }
-            })
-            this.environment = new Environment()
-
-            // Remove preloader
-            this.html.preloader.classList.add("preloaded");
-            this.html.preloader.remove();
-            this.html.playButton.remove();
-
-            // Animation timeline
-            this.animationPipeline();
-        });
-
-
-
-
-
-        // Wait for resources
-        this.resources.on('ready', () =>
-        {
             this.html.playButton.classList.add("fade-in");
             this.html.playButton.addEventListener('click', () => {
 
                 this.html.playButton.classList.replace("fade-in", "fade-out");
-                //this.sound.createSounds();
+                this.sound.createSounds();
 
                 setTimeout(() => {
                     this.experience.time.start = Date.now()
@@ -64,7 +31,20 @@ export default class World
                     //this.godRays = new GodRays()
                     //this.itachi = new Itachi()
                     //this.crow = new Crow()
-                    //this.portal = new Portal()
+                    this.text = new Text()
+                    this.portal = new Portal({
+                        colors:
+                        // {
+                        //     a: '#130000',
+                        //     b: '#ff000a',
+                        //     c: '#ff661e',
+                        // }
+                            {
+                                a: '#420e5f',
+                                b: '#858585',
+                                c: '#131111',
+                            }
+                    })
                     this.environment = new Environment()
 
                     // Remove preloader
@@ -87,6 +67,9 @@ export default class World
         //
         // if (this.camera)
         //     this.camera.animateCameraPosition();
+
+        if ( this.text )
+            this.text.animateTextPosition()
     }
 
     resize() {
@@ -98,13 +81,8 @@ export default class World
     {
         if ( this.portal )
             this.portal.update()
-        // if (this.godRays)
-        //     this.godRays.update()
-        //
-        // if (this.crow)
-        //     this.crow.update()
-        //
-        // if (this.itachi)
-        //     this.itachi.update()
+
+        if ( this.text )
+            this.text.update()
     }
 }

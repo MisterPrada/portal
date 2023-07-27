@@ -2,6 +2,9 @@ import * as THREE from 'three'
 import Experience from '../../Experience.js'
 import Particles from './Particles.js'
 import Halo from './Halo.js'
+import EventHorizon from './EventHorizon.js'
+import Smoke from './Smoke.js'
+import Lightnings from './Lightnings.js'
 export default class Portal {
     constructor(_options) {
         this.experience = new Experience()
@@ -17,23 +20,27 @@ export default class Portal {
 
         this.parameters = {
             position: new THREE.Vector3(0, 0, 0),
-            rotation: new THREE.Vector3(0, -90, 0),
-            scale: new THREE.Vector3(0.04, 0.04, 0.04),
+            scale: new THREE.Vector3(0.0008, 0.0008, 0.0008),
+
+            portalPosition: new THREE.Vector3(0.3, 0.8, -1),
+            portalScale: new THREE.Vector3(0.9, 0.9, 0.9),
         }
 
         this.group = new THREE.Group()
+        this.group.position.copy(this.parameters.portalPosition);
+        this.group.scale.copy(this.parameters.portalScale);
         this.scene.add(this.group)
 
-        //this.setModel()
-        //this.setAnimation()
+        this.setModel()
+        this.setAnimation()
         this.setDebug()
 
         this.setColors()
         this.setParticles()
         this.setHalo()
-        // this.setEventHorizon()
-        // this.setSmoke()
-        // this.setLightnins()
+        this.setEventHorizon()
+        this.setSmoke()
+        this.setLightnins()
     }
 
     setModel() {
@@ -42,7 +49,9 @@ export default class Portal {
 
         this.model.position.copy(this.parameters.position);
         this.model.scale.copy(this.parameters.scale);
-        this.model.rotation.setFromVector3(this.parameters.rotation);
+
+        // rotate 90 degrees
+        this.model.rotateY(Math.PI / 2);
 
         this.scene.add(this.model);
     }
@@ -91,6 +100,22 @@ export default class Portal {
         this.group.add(this.halo.mesh)
     }
 
+    setEventHorizon() {
+        this.eventHorizon = new EventHorizon({ debugFolder: this.debugFolder, colors: this.colors })
+        this.group.add(this.eventHorizon.mesh)
+    }
+
+    setSmoke() {
+        this.smoke = new Smoke({ debugFolder: this.debugFolder, colors: this.colors })
+        this.group.add(this.smoke.group)
+    }
+
+    setLightnins()
+    {
+        this.lightnings = new Lightnings({ debugFolder: this.debugFolder, colors: this.colors })
+        this.group.add(this.lightnings.group)
+    }
+
     setAnimation() {
         this.animation = {}
 
@@ -125,10 +150,10 @@ export default class Portal {
             this.animation.mixer.update(this.time.delta)
 
         this.particles.update()
-        // this.halo.update()
-        // this.eventHorizon.update()
-        // this.smoke.update()
-        // this.lightnings.update()
+        this.halo.update()
+        this.eventHorizon.update()
+        this.smoke.update()
+        this.lightnings.update()
     }
 
     setDebug() {

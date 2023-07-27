@@ -42,18 +42,8 @@ export default class Sound extends EventEmitter
         this.backgroundSound = new THREE.Audio( this.listener );
         this.backgroundSound.setBuffer( this.resources.items.backgroundSound );
         this.backgroundSound.setLoop( true );
-        this.backgroundSound.setVolume( 0.5 );
+        this.backgroundSound.setVolume( 0.8 );
         this.backgroundSound.play();
-
-        this.sharinganSound = new THREE.Audio( this.listener );
-        this.sharinganSound.setBuffer( this.resources.items.sharinganSound );
-        this.sharinganSound.setLoop( false );
-        this.sharinganSound.setVolume( 0.7 );
-
-        this.crowsSound = new THREE.Audio( this.listener );
-        this.crowsSound.setBuffer( this.resources.items.crowsSound );
-        this.crowsSound.setLoop( true );
-        this.crowsSound.setVolume( 0.4 );
 
         this.soundsCreated = true;
 

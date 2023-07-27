@@ -26,7 +26,7 @@ export default class Camera
         this.instance = new THREE.PerspectiveCamera(25, this.sizes.width / this.sizes.height, 0.1, 3000)
         //const defaultCameraPosition = new THREE.Vector3(0.0, -100.0, 0.0);
         //const defaultCameraPosition = new THREE.Vector3(10.0, 20.0, -200);
-        const defaultCameraPosition = new THREE.Vector3(5.0, 4.0, 5);
+        const defaultCameraPosition = new THREE.Vector3(0.0, 4.0, 5);
 
         this.instance.position.copy(defaultCameraPosition)
 

@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 
 import Experience from '../../Experience.js'
-import vertexShader from '../../shaders/portalHalo/vertex.glsl'
-import fragmentShader from '../../shaders/portalHalo/fragment.glsl'
+import vertexShader from '../../shaders/portalEventHorizon/vertex.glsl'
+import fragmentShader from '../../shaders/portalEventHorizon/fragment.glsl'
 
-export default class Halo
+export default class EventHorizon
 {
     constructor(_options)
     {
@@ -20,7 +20,7 @@ export default class Halo
         // if(this.debug)
         // {
         //     this.debugFolder = this.debug.addFolder({
-        //         title: 'halo'
+        //         title: 'eventHorizon'
         //     })
         // }
 
@@ -44,9 +44,8 @@ export default class Halo
             uniforms:
             {
                 uTime: { value: 0 },
-                uColorA: { value: this.colors.a.instance },
-                uColorB: { value: this.colors.b.instance },
-                uColorC: { value: this.colors.c.instance }
+                uColorStart: { value: this.colors.b.instance },
+                uColorEnd: { value: this.colors.c.instance }
             },
             vertexShader: vertexShader,
             fragmentShader: fragmentShader

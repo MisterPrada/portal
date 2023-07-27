@@ -34,11 +34,11 @@ export default [
     // },
 
 
-    // {
-    //     name: 'backgroundSound',
-    //     type: 'audio',
-    //     path: 'sounds/background.mp3'
-    // },
+    {
+        name: 'backgroundSound',
+        type: 'audio',
+        path: 'sounds/dark-portal.mp3'
+    },
     // {
     //     name: 'sharinganSound',
     //     type: 'audio',

@@ -81,4 +81,11 @@ void main()
     //gl_FragColor.a = step(0.19, gl_FragColor.r);
 
     gl_FragColor.a = smoothstep(0.3, 0.7, mix(0.0, 2.0, gl_FragColor.r * uOpacity));
+
+    // set White color
+    gl_FragColor.rgb = mix(vec3(0.0), vec3(1.0), gl_FragColor.r * uOpacity);
+
+    //    vec4 originalColor = gl_FragColor;
+//    float colorOut = 1.0 - gl_FragColor.a; // от 0.0 (original Color) до 1.0 (Color Out)
+//    gl_FragColor = mix(originalColor, vec4(.3, .1, .8, originalColor.a), colorOut);
 }

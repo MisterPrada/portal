@@ -13,6 +13,7 @@ export default class Sound extends EventEmitter
         this.resources = this.experience.resources
 
         this.soundsCreated = false;
+        this.fftSize = 128;
 
     }
 
@@ -44,6 +45,9 @@ export default class Sound extends EventEmitter
         this.backgroundSound.setLoop( true );
         this.backgroundSound.setVolume( 0.8 );
         this.backgroundSound.play();
+
+        // create an AudioAnalyser, passing in the sound and desired fftSize
+        this.backgroundSoundAnalyser = new THREE.AudioAnalyser( this.backgroundSound, this.fftSize );
 
         this.soundsCreated = true;
 

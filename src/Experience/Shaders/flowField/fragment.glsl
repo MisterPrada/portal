@@ -2,6 +2,7 @@ uniform float uTime;
 uniform float uDelta;
 uniform sampler2D uBaseTexture;
 uniform sampler2D uTexture;
+uniform sampler2D uAudioData;
 
 uniform float uDecaySpeed;
 
@@ -88,6 +89,8 @@ float perlin3d(vec3 P)
 void main()
 {
     vec4 color = texture2D(uTexture, vUv);
+    float audioColor = texture2D(uAudioData, vec2( vUv.x, 0.0 ) ).r;
+
     color.a -= uDecaySpeed * uDelta;
 
     // Reset to base position

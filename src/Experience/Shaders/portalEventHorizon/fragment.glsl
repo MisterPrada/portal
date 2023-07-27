@@ -86,7 +86,7 @@ void main()
     float angle = ( (0.3 * sin(atan(centeredUv.x, centeredUv.y))) * (cos(atan(centeredUv.x, centeredUv.y))));
     vec2 smokeUv = vec2(distanceToCenter, angle);
 
-    float halo = smoothstep(0.0, 1.0, 1.0 - abs(distanceToCenter - 0.34) * 20.0);
+    float halo = smoothstep(0.0, 1.0, 1.0 - abs(distanceToCenter - 0.34) * 6.5);
 
     float smoke = perlin3d(vec3(smokeUv * vec2(50.0, 15.0), uTime * 0.001));
 

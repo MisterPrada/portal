@@ -97,6 +97,7 @@ export default class Portal {
 
     setHalo() {
         this.halo = new Halo({ debugFolder: this.debugFolder, colors: this.colors })
+        this.halo.mesh.scale.copy(new THREE.Vector3(1.7, 1.7, 1.7));
         this.group.add(this.halo.mesh)
     }
 

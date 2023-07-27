@@ -13,6 +13,7 @@ export default class FlowField
         this.time = this.experience.time
         this.scene = this.experience.scene
         this.camera = this.experience.camera
+        this.sound = this.experience.world.sound
 
         this.positions = _options.positions
         this.debug = _options.debugFolder
@@ -127,6 +128,8 @@ export default class FlowField
         // Geometry
         this.plane.geometry = new THREE.PlaneGeometry(1, 1, 1, 1)
 
+        const format = ( this.renderer.instance.capabilities.isWebGL2 ) ? THREE.RedFormat : THREE.LuminanceFormat;
+
         // Material
         this.plane.material = new THREE.ShaderMaterial({
             // precision: 'highp',
@@ -143,7 +146,9 @@ export default class FlowField
                 uPerlinFrequency: { value: 4 },
                 uPerlinMultiplier: { value: 0.004 },
                 uTimeFrequency: { value: 0.0004 },
-                uSeed: { value: this.seed }
+                uSeed: { value: this.seed },
+
+                uAudioData: { value: new THREE.DataTexture( this.sound.backgroundSoundAnalyser.data, this.sound.fftSize / 2, 1, format ) }
             },
             vertexShader: vertexShader,
             fragmentShader: fragmentShader
@@ -266,6 +271,10 @@ export default class FlowField
         this.plane.material.uniforms.uTime.value = this.time.elapsed * 1000
 
         this.plane.material.uniforms.uTexture.value = this.renderTargets.secondary.texture
+
+        //update audio
+        this.sound.backgroundSoundAnalyser.getFrequencyData();
+        this.plane.material.uniforms.uAudioData.value.needsUpdate = true;
 
         this.render()
     }

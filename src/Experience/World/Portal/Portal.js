@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import Experience from '../../Experience.js'
 import Particles from './Particles.js'
+import Halo from './Halo.js'
 export default class Portal {
     constructor(_options) {
         this.experience = new Experience()
@@ -29,7 +30,7 @@ export default class Portal {
 
         this.setColors()
         this.setParticles()
-        // this.setHalo()
+        this.setHalo()
         // this.setEventHorizon()
         // this.setSmoke()
         // this.setLightnins()
@@ -83,6 +84,11 @@ export default class Portal {
     setParticles() {
         this.particles = new Particles({ debugFolder: this.debugFolder, colors: this.colors })
         this.group.add(this.particles.points)
+    }
+
+    setHalo() {
+        this.halo = new Halo({ debugFolder: this.debugFolder, colors: this.colors })
+        this.group.add(this.halo.mesh)
     }
 
     setAnimation() {

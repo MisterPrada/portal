@@ -37,6 +37,16 @@ export default class FlowField
         this.setDebugPlane()
         this.setFboUv()
 
+
+        // setTimeout(() => {
+        //     this.setBaseTexture()
+        //     this.setRenderTargets()
+        //     this.setEnvironment()
+        //     this.setPlane()
+        //
+        //     this.render()
+        // }, 3000)
+
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
                 this.time.start = Date.now()
@@ -45,6 +55,11 @@ export default class FlowField
         });
 
         this.render()
+
+
+        // setTimeout(() => {
+        //     this.plane.material.uniforms.uTexture.value = this.renderTargets.secondary.texture
+        // }, 3000);
     }
 
     setBaseTexture()
@@ -118,7 +133,7 @@ export default class FlowField
             uniforms:
             {
                 uTime: { value: 0 },
-                uDelta: { value: 16 },
+                uDelta: { value: 0.016 },
 
                 uBaseTexture: { value: this.baseTexture },
                 uTexture: { value: this.baseTexture },
@@ -137,6 +152,8 @@ export default class FlowField
         // Mesh
         this.plane.mesh = new THREE.Mesh(this.plane.geometry, this.plane.material)
         this.environment.scene.add(this.plane.mesh)
+
+
 
         // Debug
         if(this.debug)
@@ -184,6 +201,7 @@ export default class FlowField
         // Mesh
         this.debugPlane.mesh = new THREE.Mesh(this.debugPlane.geometry, this.debugPlane.material)
         this.debugPlane.mesh.visible = false
+        this.debugPlane.mesh.scale.copy(new THREE.Vector3(40, 40, 40))
         this.scene.add(this.debugPlane.mesh)
 
 
@@ -246,6 +264,7 @@ export default class FlowField
         // Update material
         this.plane.material.uniforms.uDelta.value = this.time.delta * 1000
         this.plane.material.uniforms.uTime.value = this.time.elapsed * 1000
+
         this.plane.material.uniforms.uTexture.value = this.renderTargets.secondary.texture
 
         this.render()

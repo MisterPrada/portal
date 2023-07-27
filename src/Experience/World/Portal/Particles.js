@@ -54,6 +54,7 @@ export default class Particles
                 })
         }
 
+
         this.setPositions()
         this.setFlowfield()
         this.setGeometry()

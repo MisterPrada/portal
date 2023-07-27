@@ -21,7 +21,7 @@ export default class World
             this.html.playButton.addEventListener('click', () => {
 
                 this.html.playButton.classList.replace("fade-in", "fade-out");
-                this.sound.createSounds();
+                //this.sound.createSounds();
 
                 setTimeout(() => {
                     this.experience.time.start = Date.now()

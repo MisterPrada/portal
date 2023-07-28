@@ -42,6 +42,7 @@ export default class Camera
         this.controls.minDistance = 0;
         this.controls.maxDistance = 500;
         this.controls.enabled = true;
+        this.controls.target = new THREE.Vector3(0, 1, 0);
     }
 
     resize()
@@ -66,7 +67,7 @@ export default class Camera
             this.instance.position.copy(this.lerpVector);
         }
 
-        this.instance.lookAt(new THREE.Vector3(0, 0, 0));
+        //this.instance.lookAt(new THREE.Vector3(0, 0, 0));
 
         this.controls.update()
 

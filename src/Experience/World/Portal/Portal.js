@@ -5,6 +5,8 @@ import Halo from './Halo.js'
 import EventHorizon from './EventHorizon.js'
 import Smoke from './Smoke.js'
 import Lightnings from './Lightnings.js'
+import gsap from "gsap";
+import Time from "../../Utils/Time.js";
 export default class Portal {
     constructor(_options) {
         this.experience = new Experience()
@@ -31,16 +33,18 @@ export default class Portal {
         this.group.scale.copy(this.parameters.portalScale);
         this.scene.add(this.group)
 
-        this.setModel()
-        this.setAnimation()
         this.setDebug()
 
+        this.setModel()
         this.setColors()
         this.setParticles()
         this.setHalo()
         this.setEventHorizon()
         this.setSmoke()
         this.setLightnins()
+
+        this.setAnimation()
+
     }
 
     setModel() {
@@ -143,6 +147,87 @@ export default class Portal {
 
             this.animation.actions.current = newAction
         }
+
+        this.portalShow()
+    }
+
+    portalShow() {
+
+        // halo show
+        this.timeline.add(
+            gsap.from(this.halo.mesh.scale, {
+                duration: 20,
+                delay: 0,
+                x: .01,
+                y: .01,
+                z: .01,
+                //opacity: 1.0,
+                ease: "linear",
+                onStart: () => {
+                },
+                onUpdate: () => {
+                },
+                onComplete: () => {
+                }
+            }),
+            "start"
+        )
+
+        // event horizon show
+        this.timeline.add(
+            gsap.from(this.eventHorizon.material.uniforms.uOpacity, {
+                duration: 40,
+                delay: 0,
+                value: 0.0,
+                ease: "linear",
+            }),
+            "start"
+        )
+
+        // particles show
+        this.timeline.add(
+            gsap.from(this.particles.material.uniforms.uSize, {
+                duration: 10,
+                delay: 0,
+                value: 1.0,
+                ease: "linear",
+            }),
+            "start"
+        )
+
+        // flow fields show
+        this.timeline.add(
+            gsap.from(this.particles.flowField.plane.material.uniforms.uDecaySpeed, {
+                duration: 10,
+                delay: 0,
+                value: 0.00449,
+                ease: "linear",
+            }),
+            "start"
+        )
+        this.timeline.add(
+            gsap.from(this.particles.flowField.plane.material.uniforms.uPerlinFrequency, {
+                duration: 10,
+                delay: 0,
+                value: 5,
+                ease: "linear",
+            }),
+            "start"
+        )
+
+        this.timeline.add(
+            gsap.from(this.particles.flowField.plane.material.uniforms.uPerlinMultiplier, {
+                duration: 10,
+                delay: 0,
+                value: 0.084,
+                ease: "linear",
+            }),
+            "start"
+        )
+
+        // uDecaySpeed: { value: 0.00049 },
+        // uPerlinFrequency: { value: 4 },
+        // uPerlinMultiplier: { value: 0.004 },
 
     }
 

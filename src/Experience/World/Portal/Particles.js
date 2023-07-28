@@ -121,8 +121,6 @@ export default class Particles
 
     setMaterial()
     {
-        const format = ( this.renderer.instance.capabilities.isWebGL2 ) ? THREE.RedFormat : THREE.LuminanceFormat;
-
         this.material = new THREE.ShaderMaterial({
             transparent: true,
             blending: THREE.AdditiveBlending,
@@ -130,10 +128,11 @@ export default class Particles
             uniforms:
             {
                 uColor: { value: this.colors.c.instance },
-                uSize: { value: 30 * this.config.pixelRatio },
+                uPixelRatio: { value: this.config.pixelRatio },
+                uSize: { value: 45 },
                 uMaskTexture: { value: this.resources.items.particleMaskTexture },
                 uFBOTexture: { value: this.flowField.texture },
-                uAudioData: { value: new THREE.DataTexture( this.sound.backgroundSoundAnalyser.data, this.sound.fftSize / 2, 1, format ) }
+                uAudioData: { value: this.sound.audioTexture },
             },
             vertexShader: vertexShader,
             fragmentShader: fragmentShader
@@ -161,9 +160,5 @@ export default class Particles
     {
         this.flowField.update()
         this.material.uniforms.uFBOTexture.value = this.flowField.texture
-
-        //update audio
-        this.sound.backgroundSoundAnalyser.getFrequencyData();
-        this.material.uniforms.uAudioData.value.needsUpdate = true;
     }
 }

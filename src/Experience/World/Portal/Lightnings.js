@@ -15,6 +15,7 @@ export default class Lightnings
         this.scene = this.experience.scene
         this.time = this.experience.time
         this.world = this.experience.world
+        this.sound = this.experience.world.sound
 
         this.debug = _options.debugFolder
         this.colors = _options.colors
@@ -72,6 +73,7 @@ export default class Lightnings
                     uMaskTexture: { value: this.resources.items.lightningTexture },
                     uColor: { value: this.colors.c.instance },
                     uAlpha: { value: 1 },
+                    uAudioData: { value: this.sound.audioTexture },
                 },
                 vertexShader: vertexShader,
                 fragmentShader: fragmentShader

@@ -41,7 +41,7 @@ export default class World
                         // }
                             {
                                 a: '#000000',
-                                b: '#ffffff',
+                                b: '#0068f8',
                                 c: '#ffffff',
                             }
                     })
@@ -69,7 +69,7 @@ export default class World
         //     this.camera.animateCameraPosition();
 
         if ( this.text )
-            this.text.animateTextPosition()
+            this.text.animateTextShow()
     }
 
     resize() {
@@ -84,5 +84,8 @@ export default class World
 
         if ( this.text )
             this.text.update()
+
+        if ( this.sound )
+            this.sound.update()
     }
 }

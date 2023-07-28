@@ -13,6 +13,7 @@ export default class EventHorizon
         this.resources = this.experience.resources
         this.scene = this.experience.scene
         this.time = this.experience.time
+        this.sound = this.experience.world.sound
 
         this.debug = _options.debugFolder
         this.colors = _options.colors
@@ -45,7 +46,8 @@ export default class EventHorizon
             {
                 uTime: { value: 0 },
                 uColorStart: { value: this.colors.b.instance },
-                uColorEnd: { value: this.colors.c.instance }
+                uColorEnd: { value: this.colors.c.instance },
+                uOpacity: { value: 1.0 },
             },
             vertexShader: vertexShader,
             fragmentShader: fragmentShader

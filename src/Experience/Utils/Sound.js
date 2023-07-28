@@ -11,9 +11,11 @@ export default class Sound extends EventEmitter
         this.experience = new Experience()
         this.camera = this.experience.camera.instance
         this.resources = this.experience.resources
+        this.renderer = this.experience.renderer.instance
 
         this.soundsCreated = false;
         this.fftSize = 128;
+        this.format = ( this.renderer.capabilities.isWebGL2 ) ? THREE.RedFormat : THREE.LuminanceFormat;
 
     }
 
@@ -24,11 +26,9 @@ export default class Sound extends EventEmitter
     handleVisibilityChange() {
         if (this.isTabVisible()) {
             this.backgroundSound.play();
-            this.crowsSound.play();
             this.listener.setMasterVolume(1)
         } else {
             this.backgroundSound.pause();
-            this.crowsSound.pause();
             this.listener.setMasterVolume(0)
         }
     }
@@ -48,6 +48,7 @@ export default class Sound extends EventEmitter
 
         // create an AudioAnalyser, passing in the sound and desired fftSize
         this.backgroundSoundAnalyser = new THREE.AudioAnalyser( this.backgroundSound, this.fftSize );
+        this.audioTexture = new THREE.DataTexture( this.backgroundSoundAnalyser.data, this.fftSize / 2, 1, this.format );
 
         this.soundsCreated = true;
 
@@ -61,5 +62,12 @@ export default class Sound extends EventEmitter
         //     }
         // });
 
+    }
+
+    update() {
+        if ( this.soundsCreated === false )
+            return
+        this.backgroundSoundAnalyser.getFrequencyData();
+        this.audioTexture.needsUpdate = true;
     }
 }

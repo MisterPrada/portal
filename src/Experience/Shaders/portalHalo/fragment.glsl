@@ -4,6 +4,7 @@ uniform vec3 uColorA;
 uniform vec3 uColorB;
 uniform vec3 uColorC;
 uniform float uTime;
+uniform sampler2D uAudioData;
 
 varying vec2 vUv;
 
@@ -84,6 +85,7 @@ void main()
 {
     vec2 centeredUv = vUv - 0.5;
     float distanceToCenter = length(centeredUv);
+    float audioF = texture2D(uAudioData, vec2( gl_PointCoord.x, 0.0 ) ).r;
 
     float colorMixA = pow(distanceToCenter * 3.0, 4.0);
     vec3 color = mix(uColorA, uColorB, colorMixA);
@@ -97,5 +99,5 @@ void main()
     alpha = 1.0 - alpha;
     alpha = smoothstep(0.0, 1.0, alpha);
 
-    gl_FragColor = vec4(color, alpha);
+    gl_FragColor = vec4(color * audioF, alpha);
 }

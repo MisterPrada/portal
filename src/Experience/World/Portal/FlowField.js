@@ -19,7 +19,7 @@ export default class FlowField
         this.debug = _options.debugFolder
 
         this.count = this.positions.length / 3
-        this.width = 4096
+        this.width = 256
         this.height = Math.ceil(this.count / this.width)
         this.texture = null
         this.seed = Math.random() * 1000
@@ -48,12 +48,12 @@ export default class FlowField
         //     this.render()
         // }, 3000)
 
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                this.time.start = Date.now()
-                this.time.current = this.time.start
-            }
-        });
+        // document.addEventListener('visibilitychange', () => {
+        //     if (!document.hidden) {
+        //         this.time.start = Date.now()
+        //         this.time.current = this.time.start
+        //     }
+        // });
 
         this.render()
 
@@ -128,8 +128,6 @@ export default class FlowField
         // Geometry
         this.plane.geometry = new THREE.PlaneGeometry(1, 1, 1, 1)
 
-        const format = ( this.renderer.instance.capabilities.isWebGL2 ) ? THREE.RedFormat : THREE.LuminanceFormat;
-
         // Material
         this.plane.material = new THREE.ShaderMaterial({
             // precision: 'highp',
@@ -148,7 +146,7 @@ export default class FlowField
                 uTimeFrequency: { value: 0.0004 },
                 uSeed: { value: this.seed },
 
-                uAudioData: { value: new THREE.DataTexture( this.sound.backgroundSoundAnalyser.data, this.sound.fftSize / 2, 1, format ) }
+                uAudioData: { value: this.sound.audioTexture }
             },
             vertexShader: vertexShader,
             fragmentShader: fragmentShader
@@ -271,10 +269,6 @@ export default class FlowField
         this.plane.material.uniforms.uTime.value = this.time.elapsed * 1000
 
         this.plane.material.uniforms.uTexture.value = this.renderTargets.secondary.texture
-
-        //update audio
-        this.sound.backgroundSoundAnalyser.getFrequencyData();
-        this.plane.material.uniforms.uAudioData.value.needsUpdate = true;
 
         this.render()
     }

@@ -50,12 +50,16 @@ export default class Text {
         this.scene.add(this.text);
     }
 
-    animateTextPosition() {
-        this.timeline.to(this.material.uniforms.uOpacity, {
-            duration: 3,
-            value: 1,
-            ease: "power1.inOut",
-        });
+    animateTextShow() {
+        this.timeline.add(
+            gsap.to(this.material.uniforms.uOpacity, {
+                duration: 3,
+                delay: 5,
+                value: 1,
+                ease: "power1.inOut",
+            }),
+            "start"
+        )
     }
 
     update() {

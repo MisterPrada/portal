@@ -13,6 +13,7 @@ export default class Halo
         this.resources = this.experience.resources
         this.scene = this.experience.scene
         this.time = this.experience.time
+        this.sound = this.experience.world.sound
 
         this.debug = _options.debugFolder
         this.colors = _options.colors
@@ -46,7 +47,8 @@ export default class Halo
                 uTime: { value: 0 },
                 uColorA: { value: this.colors.a.instance },
                 uColorB: { value: this.colors.b.instance },
-                uColorC: { value: this.colors.c.instance }
+                uColorC: { value: this.colors.c.instance },
+                uAudioData: { value: this.sound.audioTexture },
             },
             vertexShader: vertexShader,
             fragmentShader: fragmentShader

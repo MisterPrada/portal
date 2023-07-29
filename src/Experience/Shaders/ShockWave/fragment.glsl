@@ -27,7 +27,7 @@ void main() {
     texCoord2.y *= ratio;
     float Dist = distance(texCoord2, WaveCentre);
 
-    vec4 Color = texture(baseTexture, texCoord);
+    vec4 Color = vec4(1.0);
 
     //Only distort the pixels within the parameter distance from the centre
     if ((Dist <= ((CurrentTime) + (WaveParams.z))) && (Dist >= ((CurrentTime) - (WaveParams.z))))

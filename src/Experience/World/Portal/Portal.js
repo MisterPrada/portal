@@ -5,6 +5,7 @@ import Halo from './Halo.js'
 import EventHorizon from './EventHorizon.js'
 import Smoke from './Smoke.js'
 import Lightnings from './Lightnings.js'
+import ShockWave from "./ShockWave.js";
 import gsap from "gsap";
 import Time from "../../Utils/Time.js";
 export default class Portal {
@@ -42,8 +43,15 @@ export default class Portal {
         this.setEventHorizon()
         this.setSmoke()
         this.setLightnins()
+        //this.setShockWave()
 
         this.setAnimation()
+
+        this.group.traverse((child) => {
+            if (child.isMesh) {
+                child.frustumCulled = false
+            }
+        });
 
     }
 
@@ -101,7 +109,7 @@ export default class Portal {
 
     setHalo() {
         this.halo = new Halo({ debugFolder: this.debugFolder, colors: this.colors })
-        this.halo.mesh.scale.copy(new THREE.Vector3(1.7, 1.7, 1.7));
+        this.halo.mesh.scale.copy(new THREE.Vector3(1.2, 1.2, 1.2));
         this.group.add(this.halo.mesh)
     }
 
@@ -119,6 +127,12 @@ export default class Portal {
     {
         this.lightnings = new Lightnings({ debugFolder: this.debugFolder, colors: this.colors })
         this.group.add(this.lightnings.group)
+    }
+
+    setShockWave()
+    {
+        this.shockWave = new ShockWave(this)
+        this.group.add(this.shockWave.mesh)
     }
 
     setAnimation() {
@@ -156,8 +170,8 @@ export default class Portal {
         // halo show
         this.timeline.add(
             gsap.from(this.halo.mesh.scale, {
-                duration: 20,
-                delay: 0,
+                duration: 4,
+                delay: 8,
                 x: .01,
                 y: .01,
                 z: .01,
@@ -176,10 +190,10 @@ export default class Portal {
         // event horizon show
         this.timeline.add(
             gsap.from(this.eventHorizon.material.uniforms.uOpacity, {
-                duration: 40,
-                delay: 0,
+                duration: 10,
+                delay: 8,
                 value: 0.0,
-                ease: "linear",
+                ease: "power4.inOut",
             }),
             "start"
         )
@@ -189,22 +203,22 @@ export default class Portal {
             gsap.from(this.particles.material.uniforms.uSize, {
                 duration: 10,
                 delay: 0,
-                value: 1.0,
+                value: 20.0,
                 ease: "linear",
             }),
             "start"
         )
 
-        // flow fields show
-        this.timeline.add(
-            gsap.from(this.particles.flowField.plane.material.uniforms.uDecaySpeed, {
-                duration: 10,
-                delay: 0,
-                value: 0.00449,
-                ease: "linear",
-            }),
-            "start"
-        )
+        //flow fields show
+        // this.timeline.add(
+        //     gsap.from(this.particles.flowField.plane.material.uniforms.uDecaySpeed, {
+        //         duration: 10,
+        //         delay: 0,
+        //         value: 0.00449,
+        //         ease: "linear",
+        //     }),
+        //     "start"
+        // )
         this.timeline.add(
             gsap.from(this.particles.flowField.plane.material.uniforms.uPerlinFrequency, {
                 duration: 10,
@@ -219,7 +233,7 @@ export default class Portal {
             gsap.from(this.particles.flowField.plane.material.uniforms.uPerlinMultiplier, {
                 duration: 10,
                 delay: 0,
-                value: 0.084,
+                value: 0.044,
                 ease: "linear",
             }),
             "start"
@@ -240,6 +254,7 @@ export default class Portal {
         this.eventHorizon.update()
         this.smoke.update()
         this.lightnings.update()
+        //this.shockWave.update()
     }
 
     setDebug() {

@@ -11,6 +11,7 @@ import Sound from "./Utils/Sound.js";
 
 import sources from './sources.js'
 import gsap from "gsap";
+import MotionPathPlugin from "gsap/MotionPathPlugin";
 
 let instance = null
 
@@ -100,16 +101,18 @@ export default class Experience
 
     update()
     {
+        this.timeline.time(this.time.elapsed);
         this.camera.update()
         this.world.update()
         this.renderer.update()
-        this.timeline.time(this.time.elapsed);
     }
 
     setDefaultCode(){
         document.ondblclick = function (e) {
             e.preventDefault()
         }
+
+        gsap.registerPlugin(MotionPathPlugin);
     }
 
     setConfig()

@@ -129,7 +129,7 @@ export default class Particles
             {
                 uColor: { value: this.colors.c.instance },
                 uPixelRatio: { value: this.config.pixelRatio },
-                uSize: { value: 45 },
+                uSize: { value: 65 },
                 uMaskTexture: { value: this.resources.items.particleMaskTexture },
                 uFBOTexture: { value: this.flowField.texture },
                 uAudioData: { value: this.sound.audioTexture },

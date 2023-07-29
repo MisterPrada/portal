@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import Experience from './Experience.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import gsap from "gsap";
+import {log} from "three/nodes";
 
 export default class Camera
 {
@@ -26,9 +27,9 @@ export default class Camera
         this.instance = new THREE.PerspectiveCamera(25, this.sizes.width / this.sizes.height, 0.1, 3000)
         //const defaultCameraPosition = new THREE.Vector3(0.0, -100.0, 0.0);
         //const defaultCameraPosition = new THREE.Vector3(10.0, 20.0, -200);
-        const defaultCameraPosition = new THREE.Vector3(0.0, 4.0, 5);
+        this.defaultCameraPosition = new THREE.Vector3(-4, 4, 2);
 
-        this.instance.position.copy(defaultCameraPosition)
+        this.instance.position.copy(this.defaultCameraPosition)
 
         this.lerpVector.copy(this.instance.position);
 
@@ -75,17 +76,38 @@ export default class Camera
     }
 
     animateCameraPosition() {
+        this.timeline.add(
+            gsap.to(this.instance.position, {
+                duration: 15,
+                motionPath: {
+                    path: [
+                        {x: this.defaultCameraPosition.x, y: this.defaultCameraPosition.y, z: this.defaultCameraPosition.z},
+                        {x: 0, y: 9, z: 6},
+                        {x: 10, y: 0, z: -5},
+                        {x: -5, y: -0.6, z: 5},
+                        {x:-3.538882051743628, y: -0.6302885276790784, z: 6.796678438539777},
+                    ]
+                },
+                ease: "power1.inOut",
+                onUpdate: () => {
+                },
+                onComplete: () => {
+                    console.log("Animation complete");
+                }
+            }),
+            "start"
+        );
+
+
         // this.timeline.add(
-        //     gsap.to(this.instance.position, {
+        //     gsap.from(this.instance.position, {
         //         duration: 13,
-        //         delay: 0.6,
         //         x: 10.0,
-        //         y: -50.0,
-        //         z: 150.0,
+        //         y: 15.0,
+        //         z: 15.0,
         //         ease: "power1.inOut",
         //         onComplete: () => {
-        //             this.cursorEnabled = true
-        //             this.lerpVector.copy(this.instance.position);
+        //
         //         }
         //     }),
         //     "start"

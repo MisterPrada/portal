@@ -54,7 +54,7 @@ export default class Text {
         this.timeline.add(
             gsap.to(this.material.uniforms.uOpacity, {
                 duration: 3,
-                delay: 5,
+                delay: 14,
                 value: 1,
                 ease: "power1.inOut",
             }),

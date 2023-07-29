@@ -248,7 +248,7 @@ export default class FlowField
         this.renderer.instance.render(this.environment.scene, this.environment.camera)
         this.renderer.instance.setRenderTarget(null)
 
-        this.renderer.instance.render(this.scene, this.camera.instance)
+        //this.renderer.instance.render(this.scene, this.camera.instance)
 
         // Swap
         const temp = this.renderTargets.primary

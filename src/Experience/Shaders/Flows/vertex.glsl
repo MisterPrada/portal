@@ -1,17 +1,32 @@
+uniform float uPixelRatio;
+uniform float uSize;
 uniform float uTime;
-uniform float uDelta;
-uniform sampler2D uBaseTexture;
-uniform sampler2D uTexture;
-uniform sampler2D uAudioData;
-
-uniform float uDecaySpeed;
-
-uniform float uPerlinFrequency;
+uniform float uSpeed;
 uniform float uPerlinMultiplier;
+uniform float uPerlinFrequency;
 uniform float uTimeFrequency;
 uniform float uSeed;
+uniform sampler2D uAudioData;
 
-varying vec2 vUv;
+uniform vec3 uPointA;
+uniform vec3 uPointB;
+uniform vec3 uControlPoint1;
+uniform vec3 uControlPoint2;
+
+
+attribute float aSize;
+attribute float aStartTime;
+
+vec3 bezierCurve(vec3 a, vec3 b, vec3 c, vec3 d, float t) {
+    float invT = 1.0 - t;
+    float invT2 = invT * invT;
+    float invT3 = invT2 * invT;
+
+    float t2 = t * t;
+    float t3 = t2 * t;
+
+    return a * invT3 + 3.0 * b * invT2 * t + 3.0 * c * invT * t2 + d * t3;
+}
 
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
@@ -86,31 +101,42 @@ float perlin3d(vec3 P)
     return 2.2 * n_xyz;
 }
 
+
 void main()
 {
-    vec4 color = texture2D(uTexture, vUv);
-    //float audioColor = texture2D(uAudioData, vec2( vUv.x, 0.0 ) ).r;
+//    float cycleDuration = 1.0;  // продолжительность одного цикла
+//    float cyclicTime = mod((uTime * uSpeed - aStartTime), cycleDuration);
+//    float progress = cyclicTime / cycleDuration;
 
-    color.a -= uDecaySpeed * uDelta;
 
-    // Reset to base position
-    if(color.a <= 0.0)
-    {
-        color.rgb = texture2D(uBaseTexture, vUv).rgb;
-        color.a = 1.0;
-        // color = texture2D(uBaseTexture, vUv);
-    }
-    else
-    {
-        vec4 baseColor = color;
 
-        float time = uTime * uTimeFrequency;
-        float perlinMultiplier = uPerlinMultiplier * uDelta * 0.1;
+    float progress = clamp((uTime - aStartTime * 8.0) * 0.2, 0.0, 1.0); // Деление на 10 определяет продолжительность анимации
 
-        color.r += perlin3d(uSeed + vec3(baseColor.gb * uPerlinFrequency           , time)) * perlinMultiplier;
-        color.g += perlin3d(uSeed + vec3(baseColor.rb * uPerlinFrequency + 123.45  , time)) * perlinMultiplier;
-        color.b += perlin3d(uSeed + vec3(baseColor.rg * uPerlinFrequency + 12345.67, time)) * perlinMultiplier;
+    if (progress >= 1.0) {
+        float cycleDuration = 1.0;  // продолжительность одного цикла
+        float cyclicTime = mod((uTime * uSpeed - aStartTime), cycleDuration);
+        progress = cyclicTime / cycleDuration;
     }
 
-    gl_FragColor = color;
+    vec3 pointA = uPointA; // Пример начальной точки
+    vec3 pointB = uPointB;  // Пример конечной точки
+    vec3 controlPoint1 = uControlPoint1; // Пример первой контрольной точки
+    vec3 controlPoint2 = uControlPoint2; // Пример второй контрольной точки
+
+    vec3 updatedPosition = bezierCurve(pointA, controlPoint1, controlPoint2, pointB, progress);
+
+    float time = uTime * uTimeFrequency;
+    float perlinMultiplier = 1.0 - uPerlinMultiplier * progress;
+
+    updatedPosition.x += perlin3d(uSeed + vec3(position.yz * uPerlinFrequency           , time)) * perlinMultiplier;
+    updatedPosition.y += perlin3d(uSeed + vec3(position.xz * uPerlinFrequency + 123.45  , time)) * perlinMultiplier;
+    updatedPosition.z += perlin3d(uSeed + vec3(position.xy * uPerlinFrequency + 12345.67, time)) * perlinMultiplier;
+
+    vec4 modelPosition = modelMatrix * vec4(updatedPosition, 1.0);
+
+    vec4 viewPosition = viewMatrix * modelPosition;
+    gl_Position = projectionMatrix * viewPosition;
+
+    gl_PointSize = uSize * uPixelRatio * aSize;
+    gl_PointSize *= (1.0 / - viewPosition.z);
 }

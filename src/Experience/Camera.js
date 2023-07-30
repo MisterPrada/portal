@@ -44,6 +44,13 @@ export default class Camera
         this.controls.maxDistance = 500;
         this.controls.enabled = true;
         this.controls.target = new THREE.Vector3(0, 1, 0);
+
+        // Переопределите кнопки мыши
+        this.controls.mouseButtons = {
+            //LEFT: THREE.MOUSE.ROTATE,
+            MIDDLE: null,
+            RIGHT: null  // Это отключает действие для правой кнопки мыши
+        };
     }
 
     resize()
@@ -92,6 +99,15 @@ export default class Camera
                 onUpdate: () => {
                 },
                 onComplete: () => {
+                    this.controls.mouseButtons = {
+                        LEFT: THREE.MOUSE.ROTATE,
+                        MIDDLE: null,
+                        RIGHT: null  // Это отключает действие для правой кнопки мыши
+                    };
+                    this.controls.enableZoom = false;
+
+                    this.controls.minPolarAngle = 0.5;  // небольшое ограничение сверху
+                    this.controls.maxPolarAngle = Math.PI - 0.8;  // небольшое ограничение снизу
                     console.log("Animation complete");
                 }
             }),

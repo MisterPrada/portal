@@ -91,7 +91,9 @@ void main()
     vec4 color = texture2D(uTexture, vUv);
     //float audioColor = texture2D(uAudioData, vec2( vUv.x, 0.0 ) ).r;
 
-    color.a -= uDecaySpeed * uDelta;
+    float interpolatedDelta = mix(color.a / uDelta, uDelta, 0.8);
+
+    color.a -= uDecaySpeed * interpolatedDelta;
 
     // Reset to base position
     if(color.a <= 0.0)

@@ -139,10 +139,10 @@ export default class FlowField
                 uBaseTexture: { value: this.baseTexture },
                 uTexture: { value: this.baseTexture },
 
-                uDecaySpeed: { value: 0.00049 },
+                uDecaySpeed: { value: 0.00249 },
 
                 uPerlinFrequency: { value: 4 },
-                uPerlinMultiplier: { value: 0.004 },
+                uPerlinMultiplier: { value: 0.054 },
                 uTimeFrequency: { value: 0.0004 },
                 uSeed: { value: this.seed },
 

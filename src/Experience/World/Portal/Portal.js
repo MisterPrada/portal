@@ -219,25 +219,25 @@ export default class Portal {
         //     }),
         //     "start"
         // )
-        this.timeline.add(
-            gsap.from(this.particles.flowField.plane.material.uniforms.uPerlinFrequency, {
-                duration: 10,
-                delay: 0,
-                value: 5,
-                ease: "linear",
-            }),
-            "start"
-        )
+        // this.timeline.add(
+        //     gsap.from(this.particles.flowField.plane.material.uniforms.uPerlinFrequency, {
+        //         duration: 10,
+        //         delay: 0,
+        //         value: 5,
+        //         ease: "linear",
+        //     }),
+        //     "start"
+        // )
 
-        this.timeline.add(
-            gsap.from(this.particles.flowField.plane.material.uniforms.uPerlinMultiplier, {
-                duration: 10,
-                delay: 0,
-                value: 0.044,
-                ease: "linear",
-            }),
-            "start"
-        )
+        // this.timeline.add(
+        //     gsap.from(this.particles.flowField.plane.material.uniforms.uPerlinMultiplier, {
+        //         duration: 10,
+        //         delay: 0,
+        //         value: 0.064,
+        //         ease: "linear",
+        //     }),
+        //     "start"
+        // )
 
         // uDecaySpeed: { value: 0.00049 },
         // uPerlinFrequency: { value: 4 },
